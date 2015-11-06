@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+           xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
+            http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+            http://camel.apache.org/schema/blueprint
+            http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+            http://cxf.apache.org/transports/http/configuration
+            http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+
+    <!--ak chces zmenit defaul prop, tak je potrebne na serveri /fuse/etc/sk.posam.risng.mur.soa.cfg zmenit prislusnu hodnotu na pozadovanu-->
+    <cm:property-placeholder persistent-id="sk.posam.skolenie.soa">
+        <cm:default-properties>
+            <cm:property name="public.endpoint.url.skolenie" value="/"/>
+            <cm:property name="private.endpoint.url.skolenie" value="http://localhost:8083/services/"/>
+            <cm:property name="jms.broker.url" value="failover:(tcp://172.16.13.64:64616,tcp://172.16.13.64:61616)?randomize=false"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+
+    <http-conf:conduit name="*.http-conduit">
+        <http-conf:client ConnectionTimeout="0" ReceiveTimeout="0"/>
+    </http-conf:conduit>
+
+    <cxf:cxfEndpoint id="public"
+                     address="${public.endpoint.url.skolenie}skolenie"
+                     endpointName="b:ServiceApiSOAP"
+                     serviceName="b:ServiceApi"
+                     wsdlURL="wsdl/service.xml"
+                     serviceClass="sk.posam.skolenie.client.ServiceApi"
+                     xmlns:b="http://posam.sk/skolenie/service-api"
+            >
+        <cxf:properties>
+            <entry key="exceptionMessageCauseEnabled" value="true"/>
+            <entry key="faultStackTraceEnabled" value="true"/>
+            <entry key="loggingFeatureEnabled" value="true"/>
+        </cxf:properties>
+    </cxf:cxfEndpoint>
+
+    <cxf:cxfEndpoint id="private"
+                     address="${private.endpoint.url.skolenie}ws"
+                     endpointName="b:ServiceApiSOAP"
+                     serviceName="b:ServiceApi"
+                     wsdlURL="wsdl/service.xml"
+                     serviceClass="sk.posam.skolenie.client.ServiceApi"
+                     xmlns:b="http://posam.sk/skolenie/service-api"
+            >
+        <cxf:properties>
+            <entry key="exceptionMessageCauseEnabled" value="true"/>
+            <entry key="faultStackTraceEnabled" value="true"/>
+            <entry key="loggingFeatureEnabled" value="true"/>
+            <entry key="bridgeEndpoint" value="false"/>
+        </cxf:properties>
+    </cxf:cxfEndpoint>
+
+    <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+        <property name="brokerURL" value="${jms.broker.url}"/>
+        <property name="userName" value="posam"/>
+        <property name="password" value="posam"/>
+    </bean>
+
+    <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+        <route>
+            <from uri="cxf:bean:public?dataFormat=MESSAGE"/>
+            <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
+        </route>
+    </camelContext>
+</blueprint>
