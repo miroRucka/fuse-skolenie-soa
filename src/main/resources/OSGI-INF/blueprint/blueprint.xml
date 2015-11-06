@@ -16,7 +16,7 @@
         <cm:default-properties>
             <cm:property name="public.endpoint.url.skolenie" value="/"/>
             <cm:property name="private.endpoint.url.skolenie" value="http://localhost:8083/services/"/>
-            <cm:property name="jms.broker.url" value="failover:(tcp://172.16.13.64:64616,tcp://172.16.13.64:61616)?randomize=false"/>
+            <cm:property name="jms.broker.url" value="tcp://posam-VirtualBox:61616"/>
         </cm:default-properties>
     </cm:property-placeholder>
 
@@ -29,7 +29,6 @@
                      address="${public.endpoint.url.skolenie}skolenie"
                      endpointName="b:ServiceApiSOAP"
                      serviceName="b:ServiceApi"
-                     wsdlURL="wsdl/service.xml"
                      serviceClass="sk.posam.skolenie.client.ServiceApi"
                      xmlns:b="http://posam.sk/skolenie/service-api"
             >
@@ -44,7 +43,6 @@
                      address="${private.endpoint.url.skolenie}ws"
                      endpointName="b:ServiceApiSOAP"
                      serviceName="b:ServiceApi"
-                     wsdlURL="wsdl/service.xml"
                      serviceClass="sk.posam.skolenie.client.ServiceApi"
                      xmlns:b="http://posam.sk/skolenie/service-api"
             >
@@ -65,6 +63,10 @@
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
         <route>
             <from uri="cxf:bean:public?dataFormat=MESSAGE"/>
+            <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
+        </route>
+        <route>
+            <from uri="activemq:queue:skolenie"/>
             <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
         </route>
     </camelContext>
