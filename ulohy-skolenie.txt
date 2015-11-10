@@ -1,0 +1,7 @@
+1.) vytvorit lubovolnu camel routu cez java dsl. Napriklad nahradit proxy z xml za java dsl.
+2.) pouzit EIP router na zaklade obsahu spravy presmerovat volanie na urceny ws
+	1.) treba naimplementovat 3 jednoduche ws String euro(), String dolar(), String libra(), void chyba() Kazdy z tychto ws bude vracat len jednoduchy string
+   	2.) na esb treba vystavit endpoint ktory ked zavolam so spravou 0 tak zavolam ws euro ak 1 tak dolar ak 2 tak libra ak akykolvek iny, tak sa zavola chyba.
+3.) pouzit EIP splitter ked zavolam endpoint so spravou vo formate 0,1,2 tak sa tato sprava rozdeli a zavolaju sa prislusne ws, vsetky zle znaky zavolaju chyba
+
+4.) prevadzka nakonfigurovat activemq do urcitej topologie - TODO treba dospecifikovat
