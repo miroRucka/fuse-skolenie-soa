@@ -53,9 +53,19 @@
         </cxf:properties>
     </cxf:cxfEndpoint>
 
+    <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+        <property name="brokerURL" value="${jms.broker.url}"/>
+        <property name="userName" value="posam"/>
+        <property name="password" value="posam"/>
+    </bean>
+
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
         <route>
             <from uri="cxf:bean:public?dataFormat=MESSAGE"/>
+            <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
+        </route>
+        <route>
+            <from uri="activemq:queue:skolenie"/>
             <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
         </route>
     </camelContext>
