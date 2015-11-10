@@ -24,6 +24,7 @@
         <http-conf:client ConnectionTimeout="0" ReceiveTimeout="0"/>
     </http-conf:conduit>
 
+
     <cxf:cxfEndpoint id="public"
                      address="${public.endpoint.url.skolenie}skolenie"
                      endpointName="b:ServiceApiSOAP"
