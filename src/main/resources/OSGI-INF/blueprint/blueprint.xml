@@ -19,6 +19,7 @@
         </cm:default-properties>
     </cm:property-placeholder>
 
+
     <http-conf:conduit name="*.http-conduit">
         <http-conf:client ConnectionTimeout="0" ReceiveTimeout="0"/>
     </http-conf:conduit>
@@ -34,6 +35,21 @@
             <entry key="exceptionMessageCauseEnabled" value="true"/>
             <entry key="faultStackTraceEnabled" value="true"/>
             <entry key="loggingFeatureEnabled" value="true"/>
+        </cxf:properties>
+    </cxf:cxfEndpoint>
+
+    <cxf:cxfEndpoint id="private"
+                     address="${private.endpoint.url.skolenie}ws"
+                     endpointName="b:ServiceApiSOAP"
+                     serviceName="b:ServiceApi"
+                     serviceClass="sk.posam.skolenie.client.ServiceApi"
+                     xmlns:b="http://posam.sk/skolenie/service-api"
+            >
+        <cxf:properties>
+            <entry key="exceptionMessageCauseEnabled" value="true"/>
+            <entry key="faultStackTraceEnabled" value="true"/>
+            <entry key="loggingFeatureEnabled" value="true"/>
+            <entry key="bridgeEndpoint" value="false"/>
         </cxf:properties>
     </cxf:cxfEndpoint>
 
