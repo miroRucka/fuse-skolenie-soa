@@ -53,4 +53,10 @@
         </cxf:properties>
     </cxf:cxfEndpoint>
 
+    <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+        <route>
+            <from uri="cxf:bean:public?dataFormat=MESSAGE"/>
+            <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
+        </route>
+    </camelContext>
 </blueprint>
