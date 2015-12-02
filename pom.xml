@@ -30,32 +30,6 @@
                 <version>2.3.7</version>
                 <extensions>true</extensions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-codegen-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-sources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/service.wsdl</wsdl>
-                                    <frontEnd>jaxws21</frontEnd>
-                                    <extraargs>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>sk.posam.skolenie.client</extraarg>
-                                        <extraarg>-xjc-mark-generated</extraarg>
-                                    </extraargs>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
