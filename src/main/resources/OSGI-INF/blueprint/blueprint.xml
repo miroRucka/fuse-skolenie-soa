@@ -11,11 +11,19 @@
             http://cxf.apache.org/transports/http/configuration
             http://cxf.apache.org/schemas/configuration/http-conf.xsd">
 
+    <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+        <property name="brokerURL" value="${jms.broker.url}"/>
+        <property name="userName" value="${jms.broker.user}"/>
+        <property name="password" value="${jms.broker.password}"/>
+    </bean>
+
     <cm:property-placeholder persistent-id="sk.posam.skolenie.soa">
         <cm:default-properties>
             <cm:property name="public.endpoint.url.skolenie" value="/"/>
             <cm:property name="private.endpoint.url.skolenie" value="http://localhost:8083/services/"/>
             <cm:property name="jms.broker.url" value="tcp://localhost:61616"/>
+            <cm:property name="jms.broker.user" value="posam"/>
+            <cm:property name="jms.broker.password" value="posam"/>
         </cm:default-properties>
     </cm:property-placeholder>
 
@@ -25,6 +33,10 @@
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
         <route id="proxy">
             <from uri="cxf:bean:public?dataFormat=MESSAGE"/>
+            <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
+        </route>
+        <route>
+            <from uri="activemq:queue:skolenie"/>
             <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
         </route>
     </camelContext>
