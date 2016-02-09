@@ -32,13 +32,16 @@
 
     <bean id="processor" class="sk.posam.skolenie.AggregationProcessor"/>
 
+    <bean id="javaRoute" class="sk.posam.skolenie.JavaRoute"/>
+
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+        <routeBuilder ref="javaRoute"/>
         <route id="proxy">
             <from uri="cxf:bean:public?dataFormat=POJO"/>
             <to uri="cxf:bean:private?dataFormat=POJO"/>
             <process ref="processor"/>
         </route>
-        <route>
+        <route id="jms">
             <from uri="activemq:queue:skolenie"/>
             <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
         </route>
