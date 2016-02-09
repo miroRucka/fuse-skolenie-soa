@@ -27,13 +27,16 @@
         </cm:default-properties>
     </cm:property-placeholder>
 
-    <cxf:cxfEndpoint id="public" address="${public.endpoint.url.skolenie}ws" wsdlURL="wsdl/service.wsdl" loggingFeatureEnabled="true"/>
-    <cxf:cxfEndpoint id="private" address="${private.endpoint.url.skolenie}ws" wsdlURL="wsdl/service.wsdl" loggingFeatureEnabled="true"/>
+    <cxf:cxfEndpoint id="public" address="${public.endpoint.url.skolenie}ws" serviceClass="sk.posam.skolenie.client.ServiceApi" loggingFeatureEnabled="true"/>
+    <cxf:cxfEndpoint id="private" address="${private.endpoint.url.skolenie}ws" serviceClass="sk.posam.skolenie.client.ServiceApi" loggingFeatureEnabled="true"/>
+
+    <bean id="processor" class="sk.posam.skolenie.AggregationProcessor"/>
 
     <camelContext xmlns="http://camel.apache.org/schema/blueprint">
         <route id="proxy">
-            <from uri="cxf:bean:public?dataFormat=MESSAGE"/>
-            <to uri="cxf:bean:private?dataFormat=MESSAGE"/>
+            <from uri="cxf:bean:public?dataFormat=POJO"/>
+            <to uri="cxf:bean:private?dataFormat=POJO"/>
+            <process ref="processor"/>
         </route>
         <route>
             <from uri="activemq:queue:skolenie"/>
