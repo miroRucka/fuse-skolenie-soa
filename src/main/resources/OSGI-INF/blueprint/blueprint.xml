@@ -15,26 +15,10 @@
         <cm:default-properties>
             <cm:property name="public.endpoint.url.skolenie" value="/"/>
             <cm:property name="private.endpoint.url.skolenie" value="http://localhost:8083/services/"/>
-            <cm:property name="jms.broker.url" value="tcp://posam-VirtualBox:61616"/>
+            <cm:property name="jms.broker.url" value="tcp://localhost:61616"/>
         </cm:default-properties>
     </cm:property-placeholder>
 
-    <http-conf:conduit name="*.http-conduit">
-        <http-conf:client ConnectionTimeout="0" ReceiveTimeout="0"/>
-    </http-conf:conduit>
-
-    <cxf:cxfEndpoint id="public"
-                     address="${public.endpoint.url.skolenie}skolenie"
-                     endpointName="b:ServiceApiSOAP"
-                     serviceName="b:ServiceApi"
-                     serviceClass="sk.posam.skolenie.client.ServiceApi"
-                     xmlns:b="http://posam.sk/skolenie/service-api"
-            >
-        <cxf:properties>
-            <entry key="exceptionMessageCauseEnabled" value="true"/>
-            <entry key="faultStackTraceEnabled" value="true"/>
-            <entry key="loggingFeatureEnabled" value="true"/>
-        </cxf:properties>
-    </cxf:cxfEndpoint>
+    <cxf:cxfEndpoint id="public" address="${public.endpoint.url.skolenie}skolenie" wsdlURL="wsdl/service.wsdl" loggingFeatureEnabled="true"/>
 
 </blueprint>

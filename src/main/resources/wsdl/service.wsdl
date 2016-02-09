@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://posam.sk/skolenie/service-api" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="ServiceApi" targetNamespace="http://posam.sk/skolenie/service-api">
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://posam.sk/skolenie/service-api" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="ServiceApi" targetNamespace="http://posam.sk/skolenie/service-api">
     <wsdl:types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://posam.sk/skolenie/service-api" elementFormDefault="unqualified" targetNamespace="http://posam.sk/skolenie/service-api" version="1.0">
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://posam.sk/skolenie/service-api" targetNamespace="http://posam.sk/skolenie/service-api" version="1.0">
 
             <xs:element name="zlozityVypis" type="tns:zlozityVypis"/>
 
@@ -49,7 +50,7 @@
     </wsdl:binding>
     <wsdl:service name="ServiceApi">
         <wsdl:port binding="tns:ServiceApiSoapBinding" name="ServiceApiSOAP">
-            <soap:address location="http://localhost:8083/services/ws"/>
+            <soap:address location="http://localhost:8181/cxf/skolenie"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<features>
-<feature name="${project.artifactId}" version="${project.version}">
-	<bundle>fab:mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
-	<configfile finalname="/etc/${config.file}" override="true">
-		jar:mvn:${project.groupId}/${project.artifactId}/${project.version}!/${config.file}
-	</configfile>
-</feature>
-</features>
